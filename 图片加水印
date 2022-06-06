@@ -1,0 +1,83 @@
+package pictureAddContext;
+
+import cn.goswan.orient.common.security.util.SecurityUtils;
+import com.alibaba.fastjson.JSONObject;
+import java.util.List;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import javax.imageio.ImageIO;
+
+
+/**
+ * @use 利用Java代码给图片加水印
+ */
+public class WaterMarkUtils {
+
+    /**
+     * @param srcImgPath 源图片路径
+     * @param tarImgPath 保存的图片路径
+     * @param waterMarkContent 水印内容
+     */
+    public static void addWaterMark(String srcImgPath, String tarImgPath, String waterMarkContent,String waterMarkContent1) {
+
+        try {
+            Font font = new Font("黑体", Font.PLAIN, 50);//水印字体
+            Color markContentColor=new Color(255, 0, 0);
+            // 读取原图片信息
+            File srcImgFile = new File(srcImgPath);//得到文件
+            Image srcImg = ImageIO.read(srcImgFile);//文件转化为图片
+            int srcImgWidth = srcImg.getWidth(null);//获取图片的宽
+            int srcImgHeight = srcImg.getHeight(null);//获取图片的高
+            System.out.println(srcImgWidth);//624
+            System.out.println(srcImgHeight);//351
+            // 加水印
+            BufferedImage bufImg = new BufferedImage(srcImgWidth, srcImgHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = bufImg.createGraphics();
+            bufImg = g.getDeviceConfiguration().createCompatibleImage(srcImgWidth,srcImgHeight, Transparency.TRANSLUCENT);
+            g.dispose();
+            g = bufImg.createGraphics();
+            g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
+            g.setColor(markContentColor); //根据图片的背景设置水印颜色
+            g.setFont(font);              //设置字体
+            //设置水印的坐标
+//            int x = srcImgWidth - 2*getWatermarkLength(waterMarkContent, g);
+//            int y = srcImgHeight - 2*getWatermarkLength(waterMarkContent, g);
+            int x = (int) (srcImgWidth*0.08);
+            int y = (int) (srcImgHeight*0.7);
+            System.out.println(x);
+            System.out.println(y);
+            g.drawString(waterMarkContent, x, y);  //画出水印
+            g.drawString(waterMarkContent1,x,y+120);
+            g.dispose();
+            // 输出图片
+            FileOutputStream outImgStream = new FileOutputStream(tarImgPath);
+            ImageIO.write(bufImg, "png", outImgStream);
+            System.out.println("添加水印完成");
+            outImgStream.flush();
+            outImgStream.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+    public static int getWatermarkLength(String waterMarkContent, Graphics2D g) {
+        return g.getFontMetrics(g.getFont()).charsWidth(waterMarkContent.toCharArray(), 0, waterMarkContent.length());
+    }
+    /**
+    public static void main(String[] args) {
+
+        String srcImgPath="D:/pictureAddContext/controlled.png"; //源图片地址
+        String tarImgPath="D:/pictureAddContext/controlled1.png"; //待存储的地址
+//        String srcImgPath = System.getProperty("user.dir")+File.separator+"images"+File.separator+"controlled.png";
+//        String tarImgPath = System.getProperty("user.dir")+File.separator+"images"+File.separator+"controlledNew.png";
+//        String userNo = SecurityUtils.getUser().getUsername();
+//        List<JSONObject> userInfo = this.getUserAffiliations(userNo);
+//        String userName = SecurityUtils.getUser().getRealname();
+        String waterMarkContent="部门:"+"钢轧作业部"+" 姓名:"+"韩金龙";  //水印内容
+        String waterMarkContent1="日期:2022年06月01日~2022年06月02日";  //水印内容
+        System.out.println(waterMarkContent);
+        new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,waterMarkContent1);
+    }
+    */
+}
