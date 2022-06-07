@@ -1,0 +1,123 @@
+ @GetMapping("/download")
+    public void download(String id) throws IOException {
+        DockFileRecords dockFileRecords = dockFileRecordsService.getById(id);
+        System.out.println(dockFileRecords);
+        String fname = dockFileRecords.getFileName();
+        System.out.println(fname);
+        String repopt_url =  "http://192.168.1.112:8080" + dockFileRecords.getFilePath();
+        String urlStr = repopt_url;
+        System.out.println(urlStr);
+        //处理数据时获取的存放时的文件包含特殊字符，根据实际情况截取了特殊符号之前的长度，并且拼接上了文件名后缀
+        String fileName = fname;
+        //文件下载时存放的路径
+        String  savePath = "d:\\2021";
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        //设置超时间为3秒
+//      conn.setConnectTimeout(3*1000);
+        //防止屏蔽程序抓取而返回403错误
+//      conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+        //得到输入流
+        InputStream inputStream = conn.getInputStream();
+        //获取自己数组
+        byte[] getData = readInputStream(inputStream);
+        //文件保存位置
+        File saveDir = new File(savePath);
+        if(!saveDir.exists()){
+            saveDir.mkdir();
+        }
+        File file = new File(saveDir+ File.separator+fileName);
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(getData);
+        if(fos!=null){
+            fos.close();
+        }
+        if(inputStream!=null){
+            inputStream.close();
+        }
+        System.out.println("info:"+url+" download success");
+
+//        List<DockFileRecords> maps = (List<DockFileRecords>) dockFileRecordsService.getById(id);
+//        Iterator<DockFileRecords> iterator = maps.iterator();
+//        while(iterator.hasNext()){
+//            //取出每条数据
+//            Map<String, Object> next = (Map<String, Object>) iterator.next();
+//            //获取文件名
+//            String fname = next.get("file_name").toString().trim();
+//            //获取下载链接
+//            String repopt_url = "http://192.168.1.112:8080" + next.get("file_path").toString().trim();
+//
+//            String urlStr = repopt_url;
+//            System.out.println(urlStr);
+//            //处理数据时获取的存放时的文件包含特殊字符，根据实际情况截取了特殊符号之前的长度，并且拼接上了文件名后缀
+//            String fileName = fname;
+//            //文件下载时存放的路径
+//            String  savePath = "d:\\2021";
+//            URL url = new URL(urlStr);
+//            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//            //设置超时间为3秒
+////            conn.setConnectTimeout(3*1000);
+//            //防止屏蔽程序抓取而返回403错误
+////            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+//            //得到输入流
+//            InputStream inputStream = conn.getInputStream();
+//            //获取自己数组
+//            byte[] getData = readInputStream(inputStream);
+//            //文件保存位置
+//            File saveDir = new File(savePath);
+//            if(!saveDir.exists()){
+//                saveDir.mkdir();
+//            }
+//            File file = new File(saveDir+ File.separator+fileName);
+//            FileOutputStream fos = new FileOutputStream(file);
+//            fos.write(getData);
+//            if(fos!=null){
+//                fos.close();
+//            }
+//            if(inputStream!=null){
+//                inputStream.close();
+//            }
+//            System.out.println("info:"+url+" download success");
+//        }
+
+    }
+    /**
+     * 从输入流中获取字节数组
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
+    public static byte[] readInputStream(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        while((len = inputStream.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+        }
+        bos.close();
+        return bos.toByteArray();
+    }
+    
+    
+    
+    
+    前端：
+ JS:
+  export function download(query) {
+  return request({
+    url: '/doc/dockfilerecords/download',
+    method: 'get',
+    params: query
+  })
+  
+ VUE:
+ 记得import js 和@click
+  method:{
+      download1(row){
+      let par ={
+        id:row.id
+      }
+      download(par)
+    },
+}
+}
