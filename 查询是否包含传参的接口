@@ -1,0 +1,29 @@
+/**
+     * 判断下载人员
+     * @param fileId
+     * @param userId
+     */
+    @GetMapping("/selectDownloadRange/{fileId},{userId}")
+    public R selectDownloadRange(@PathVariable int fileId ,@PathVariable String userId){
+        if (0 != fileId ){//判断是否有此文件
+            FileInfo fileInfo= fileInfoService.getById(fileId);//根据id拿到数据
+            if (fileInfo.getDelFlg() == 0){//判断是否是删除文件（'删除标志0：非删除 1删除'）
+                if (null == fileInfo.getDownloadPersonnel()){//如果下载人员字段为空
+                    return R.ok(Boolean.FALSE);//FALSE
+                }else if (fileInfo.getDownloadPersonnel()!=null){//如果下载人员字段不为空（字段为逗号分割的字符串）
+                List<String> list = Arrays.asList(fileInfo.getDownloadPersonnel().split(","));//将字符串根据逗号分割，转化为list（list的contains只能找到一样的值，例：968（968:TRUE,96:FALSE）
+                if (list.contains(userId)){//判断list里是否包含userID
+                    return R.ok(Boolean.TRUE);//TRUE
+                }else {//如果不包含
+                    return R.ok(Boolean.FALSE);//FALSE
+                }
+                }
+            }else if (fileInfo.getDelFlg() == 1){//如果删除标志是1
+                return R.ok(Boolean.FALSE);//FALSE
+            }
+        }else {//如果没此文件
+            return R.ok(Boolean.FALSE);//FALSE
+        }
+        return R.ok();
+
+    }
