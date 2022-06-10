@@ -1,0 +1,79 @@
+ /**
+     * 判断当前用户是否有查看当前文档的权限
+     * @param fileInfo
+     * @return
+     */
+     //程序说明：点击进入文件详情，调用getById接口，另写一方法，取得数据库中记录的数据（允许查看的用户id，岗位，处室，部门），再获取登陆者的用户id（code），调用接口查询登陆者的
+     //数据（用户id，岗位，处室，部门），并进行对比。
+     public Boolean selectViewPersonnel(FileInfo fileInfo){
+        int id = fileInfo.getId();
+        TDocFileViewPersonnel tDocFileViewPersonnel = tDocFileViewPersonnelService.selectFileIdAndType(id,0);
+        if (DocUtils.isEmpeyOrNull(tDocFileViewPersonnel)){
+            return false;
+        }
+        String userCode = tDocFileViewPersonnel.getUserCode();//用户id
+        String jobCode = tDocFileViewPersonnel.getJobCode();//岗位
+        String postSid = tDocFileViewPersonnel.getPostSid();//处室
+        String orgSid = tDocFileViewPersonnel.getOrgSid();//部门
+        String code = String.valueOf(SecurityUtils.getUser().getCode());
+        List users = this.getUserAffiliations ( code );//接口返回的是列表中的一个json串
+        if (users.isEmpty()){
+            return true;
+        }
+        JSONObject jsonObject = (JSONObject) users.get(0);
+        String userCodeInTable = jsonObject.getString("userNo");//用户id
+        String jobCodeInTable = jsonObject.getString("jobCode");//岗位
+        String postSidInTable = jsonObject.getString("postSid");//处室
+        String orgSideInTable = jsonObject.getString("orgSid");//部门
+        if (DocUtils.isEmpeyOrNull(userCode)){//如果用户id为空，继续查岗位
+            if (DocUtils.isEmpeyOrNull(jobCode)){//如果岗位为空，继续查处室
+                if (DocUtils.isEmpeyOrNull(postSid)){//如果处室为空，继续查部门
+                    if (DocUtils.isEmpeyOrNull(orgSid)){//如果部门为空，表里没数据，结束
+                        return true;
+                    }else {//如果部门不为空，则进行判断
+                        List<String> list = Arrays.asList(orgSid.split(","));
+                        if (list.contains(orgSideInTable)){//如果包含，继续运行
+                            return false;
+                        }else {//如果不同，结束
+                            return true;
+                        }
+                    }
+                }else {//如果处室不为空，则进行判断
+                    List<String> list = Arrays.asList(postSid.split(","));
+
+                    if (list.contains(postSidInTable)){//如果包含，继续运行
+                        return false;
+                    }else{//如果不同，结束
+                        return true;
+                    }
+                }
+            }else{//如果岗位不为空，则进行判断
+                List<String> list = Arrays.asList(jobCode.split(","));
+
+                if (list.contains(jobCodeInTable)){//如果包含，继续运行
+                    return false;
+                } else{//如果不同，结束
+                    return true;
+                }
+            }
+        }else {//如果用户id不为空，则进行判断
+            List<String> list = Arrays.asList(userCode.split(","));
+            if (list.contains(userCodeInTable)){//如果包含，继续运行
+                return false;
+            }else {//如果不同，结束
+                return true;
+            }
+        }
+
+    }
+    
+    
+    public FileInfo getById(String id){
+        FileInfo fileInfo = this.getBaseMapper( ).selectById(id);
+        //判断是否有查看权限
+        if (selectViewPersonnel(fileInfo)){
+            return null;//TRUE:变成null  FALSE：继续执行
+        }
+        ...
+        return 实体；
+        }
