@@ -1,0 +1,22 @@
+
+//判断是否是超级管理员(get到数组，数组转列表，在列表比对相同值)
+        List<String>  role = Arrays.asList(SecurityUtils.getUser().getRoles());
+        if (role.contains("ROLE_SUPER_ADMIN") || role.contains("ROLE_ADMIN") || role.contains("ROLE_ADMIN_RELEASE")){
+            return false;
+        }
+
+//判断是否是编制人(得到字符串，去掉前后的[]字符，转换成json，根据key拿到对应的值，get到int转换成string，判断是否相等)
+        String info = fileInfo.getPreparedUserInfo().substring(1,fileInfo.getPreparedUserInfo().length()-1);
+        JSONObject jsonObject1 = JSONObject.parseObject(info);
+        String userCode1 = jsonObject1.getString("userNo");
+        String code1 = String.valueOf(SecurityUtils.getUser().getCode());
+        if (userCode1.equals(code1) ){
+            return false;
+        }
+        
+ 
+小结：
+数组转列表：可以用Arrays.asList()
+字符串转json：JSONObject.parseObject()
+json得到数据：jsonObject1.getString("key")
+基础类型转String：String.valueOf()
