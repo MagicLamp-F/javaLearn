@@ -1,0 +1,11 @@
+个人理解：
+DTO：
+若有实体user，包含字段真实姓名realName，密码password，性别sex，描述description，
+现有操作只根据姓名和密码进行变更，那么没有必要把整个实体传入，
+可以新定义DTO只包含姓名和密码，面向对象（实体面向数据库），减少带宽。
+（“dto其实就是简单的JAVABEAN,实现Serializable借口，可以在网络间传输。dto是为了解决entity bean可能很庞大，影响网络传输性能而产生的一种想法。”）
+
+
+DTO与VO的区别：
+（“对于设计层面来说，概念上还是应该存在VO和DTO，因为两者有着本质的区别，DTO代表服务层需要接收的数据和返回的数据，而VO代表展示层需要显示的数据”）
+https://blog.csdn.net/jslrjb/article/details/86597851
