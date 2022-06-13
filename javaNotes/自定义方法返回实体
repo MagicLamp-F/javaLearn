@@ -1,0 +1,21 @@
+2022.06.10 记录：
+1：尽量对传参做判断，避免空异常，需养成良好编程习惯。
+
+2：mybatisplus要查询只有getbyid和selectone能返回实体，如果想根据某一字段查询可以在.xml手写sql进行查询，在xxmapper里定义名称，传参和返回类型.
+例：mapper
+    实体 方法名(@Param("A")Integer A, @Param("B")Integer B);
+    
+    Service
+    实体 方法名(Integer A，Integer B)
+    
+    实现类
+    @Override
+    public 实体 方法名(Integer A, Integer B) {
+        return this.getBaseMapper ().方法名(A, B);
+    }
+    
+    .xml
+    手写需要的sql，
+    <select id="方法名" resultType="实体的路径">
+        SELECT * FROM 表名 WHERE A字段名 = #{A} AND B字段名 = #{B}
+    </select>
