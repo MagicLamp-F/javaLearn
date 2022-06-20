@@ -1,4 +1,5 @@
 描述：本来是想做计算点击-退出期间阅读时长简单模拟，突然想整个尬活↓
+LocalDateTime.now()获取当前系统时间，Duration.between(start,end)计算差值，返回Long类型的时间
        Robot robot = new Robot();
 //        System.out.println("click button--------------");
         LocalDateTime startTime = LocalDateTime.now();
