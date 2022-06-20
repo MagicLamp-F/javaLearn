@@ -1,0 +1,15 @@
+描述：传入电话号userid， 根据时间WORK_DATE查询  根据WORK_TIME降序    多条数据后按降序返回
+select
+            DKLONGITUDE//打卡经度
+            ,DKLATITUDE//打卡纬度
+            ,DWLONGITUDE//定位经度
+            ,DWLATITUDE//定位纬度
+            ,PHONE//电话
+            ,WORK_DATE//日期
+            ,WORK_TIME//时间
+        from KQ_ORIGINALITY
+        where
+              1=1
+              and PHONE = #{userid}
+              and WORK_DATE = TO_CHAR(SYSDATE,'yyyy-MM-dd')
+        order by WORK_TIME desc
