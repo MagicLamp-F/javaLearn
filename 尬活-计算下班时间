@@ -1,0 +1,21 @@
+描述：本来是想做计算点击-退出期间阅读时长简单模拟，突然想整个尬活↓
+       Robot robot = new Robot();
+//        System.out.println("click button--------------");
+        LocalDateTime startTime = LocalDateTime.now();
+        System.out.println("现在时间"+startTime);
+//        startTime();
+//        robot.delay(2000);
+//        System.out.println("quit----------------------");
+//        endTime();
+        LocalDateTime endTime = LocalDateTime.of(2022,6,20,18,30);
+        Duration duration = Duration.between(startTime,endTime);
+        if (duration.toMinutes()>60){
+            Long a = duration.toMinutes()%60;
+            System.out.println("距离下班还有"+duration.toHours()+"小时"+a+"分钟");
+
+        }else{
+            System.out.println("距离下班还有"+duration.toMinutes()+"分钟");
+
+        }
+        
+        
