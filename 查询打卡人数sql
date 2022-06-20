@@ -1,0 +1,19 @@
+描述：传入一个数组格式的地址，查找不同地址下有多少人已打卡（数据库已保存），同一人多次打卡只计一次，返回地点，打卡人数，日期，打卡地经纬度。
+<select id="selectClockInNumber" parameterType="com.yingcankeji.kaoqin.dto.OriginalityDto" resultType="com.yingcankeji.kaoqin.dto.ClockInNumberRespDto">
+
+        select
+            LOCATION
+             ,count(distinct A0101) as clockInNumber//统计不同的名字（去重）
+             ,WORK_DATE,DKLONGITUDE,DKLATITUDE
+
+        from KQ_ORIGINALITY
+        where WORK_DATE = TO_CHAR(SYSDATE,'yyyy-MM-dd')
+          and
+                LOCATION in
+                <foreach close=")" collection="location" item="name" open="(" separator=",">
+                    #{name}
+                </foreach>
+        group by LOCATION,WORK_DATE,DKLONGITUDE,DKLATITUDE
+
+
+    </select>
