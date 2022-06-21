@@ -23,3 +23,6 @@ It's WENSDAY NIGHT! &U know what that means!
     <select id="方法名" resultType="实体的路径">
         SELECT * FROM 表名 WHERE A字段名 = #{A} AND B字段名 = #{B}
     </select>
+
+2022.06.21 记录：
+1.不要在循环里写sql，可以在sql里用in
