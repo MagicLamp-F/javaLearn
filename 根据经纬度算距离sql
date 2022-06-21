@@ -1,0 +1,27 @@
+DKLONGITUDE		打卡经度
+DKLATITUDE		打卡纬度
+DWLONGITUDE		定位经度
+DWLATITUDE		定位纬度
+
+select * 
+from(
+SELECT
+	A0101,
+    LOCATION,
+	DKLONGITUDE,
+    DKLATITUDE,
+    WORK_DATE,
+    WORK_TIME,
+    DWLONGITUDE,
+    DWLATITUDE,
+	( 
+      6371000 * acos (
+      cos ( DKLATITUDE * 3.14159265 / 180  ) 
+      * cos( DWLATITUDE* 3.14159265 / 180 ) 
+      * cos( (DWLONGITUDE* 3.14159265 / 180) - (DKLONGITUDE* 3.14159265 / 180) ) 
+      + sin ( DKLATITUDE* 3.14159265 / 180 ) 
+      * sin( DWLATITUDE* 3.14159265 / 180 ))
+    
+  ) AS distance
+FROM KQ_ORIGINALITY
+) where distance<=500    //单位米
