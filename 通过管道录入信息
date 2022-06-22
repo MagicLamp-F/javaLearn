@@ -1,0 +1,13 @@
+redisTemplate.executePipelined(new SessionCallback<Object>() {
+        @Override
+        public Object execute(RedisOperations redisOperations) throws DataAccessException {
+            for (int i = 0; i < useridList.size(); i++) {
+                String useridtemp = useridList.get(i);
+                String key = SystemManageConst.REDIS_RULE_PREFIX + useridtemp;
+                String value = ruleJson;
+                log.info("删除后新增该用户打卡规则，phone：" + useridtemp);
+                redisOperations.opsForValue().set(key,value);
+              }
+              return null;
+           }
+       });
