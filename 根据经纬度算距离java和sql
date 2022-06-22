@@ -1,3 +1,28 @@
+java：
+
+/**
+     * 计算距离
+     * @param lat1 纬度
+     * @param lng1 经度
+     * @param lat2 纬度
+     * @param lng2 经度
+     * @return 距离 M
+     */
+    public static double distance(double lat1, double lng1, double lat2, double lng2) {
+
+        //转弧度
+        lat1 = lat1  * Math.PI / 180;
+        lat2 = lat2  * Math.PI / 180;
+        lng1 = lng1  * Math.PI / 180;
+        lng2 = lng2  * Math.PI / 180;
+
+        double cos = Math.cos(lat2) * Math.cos(lat1) * Math.cos(lng2 -lng1) + Math.sin(lat1) * Math.sin(lat2);
+        return 6371000 * Math.acos(cos);
+    }
+
+
+sql：
+
 DKLONGITUDE		打卡经度
 DKLATITUDE		打卡纬度
 DWLONGITUDE		定位经度
