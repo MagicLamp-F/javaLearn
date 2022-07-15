@@ -26,3 +26,25 @@ It's WENSDAY NIGHT! &U know what that means!
 
 2022.06.21 记录：
 1.不要在循环里写sql，可以在sql里用in
+
+
+2022.6.29 记录：
+JSON对象常用转换类型api
+JSONObject jsonObject = JSONUtil.parseObj(ruleJson);//将其他类型转换为JSONObject类型
+String groupArrayStr = jsonObject.getStr("group");//传入key值，得到字符串类型
+JSONArray groupArray = JSONUtil.parseArray(groupArrayStr);//将字符串类型转换为JSONArray类型
+JSONObject joa = groupArray.getJSONObject(0);//取JSONArray index值，得到index位置的JSONObject类型对象
+
+2022.7.15 记录：
+常用集合可以通过stream流进行操作（java8及之后）
+操作流程：①创建stream ②操作stream(操作可叠加) ③结束stream
+常用操作（api）：创建 .stream（）
+                过滤 .stream().filter()
+                去重 .stream().distinct()
+                保留前面指定个数的元素 .stream().limit()
+                跳过前面指定个数的元素 .stream().skip()
+                返回stream处理后的元素最大/小值 .stream().*.max/min() (*意为②操作方法)
+                返回stream处理后最终的元素个数 .stream().*.count()	
+                将流转换为指定的类型，通过Collectors进行指定 .stream().*.collect()	
+
+
