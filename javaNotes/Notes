@@ -28,14 +28,14 @@ It's WENSDAY NIGHT! &U know what that means!
 1.不要在循环里写sql，可以在sql里用in
 
 
-2022.6.29 记录：
+2022.06.29 记录：
 JSON对象常用转换类型api
 JSONObject jsonObject = JSONUtil.parseObj(ruleJson);//将其他类型转换为JSONObject类型
 String groupArrayStr = jsonObject.getStr("group");//传入key值，得到字符串类型
 JSONArray groupArray = JSONUtil.parseArray(groupArrayStr);//将字符串类型转换为JSONArray类型
 JSONObject joa = groupArray.getJSONObject(0);//取JSONArray index值，得到index位置的JSONObject类型对象
 
-2022.7.15 记录：
+2022.07.15 记录：
 常用集合可以通过stream流进行操作（java8及之后）
 操作流程：①创建stream ②操作stream(操作可叠加) ③结束stream
 常用操作（api）：创建 .stream（）
@@ -48,3 +48,7 @@ JSONObject joa = groupArray.getJSONObject(0);//取JSONArray index值，得到ind
                 将流转换为指定的类型，通过Collectors进行指定 .stream().*.collect()	
 
 
+2022.07.21记录
+当两个integer比较时应使用.equals   否则比较的是地址，不过比较null会报错
+当integer和int比较时可用int
+两个Integer.valueof可以在-127~128范围内通过==比较，范围外可以转为int比较
