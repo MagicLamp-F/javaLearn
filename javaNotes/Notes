@@ -52,3 +52,13 @@ JSONObject joa = groupArray.getJSONObject(0);//取JSONArray index值，得到ind
 当两个integer比较时应使用.equals   否则比较的是地址，不过比较null会报错
 当integer和int比较时可用int
 两个Integer.valueof可以在-127~128范围内通过==比较，范围外可以转为int比较
+
+
+2022.07.25记录
+当dto设置主键并为雪花算法时（@TableId(type = IdType.ASSIGN_UUID)）
+只有insert时会自动添加主键。
+若想提前获取值，并使用，
+可以通过雪花算法方法手动获取字符串当做主键设置：    
+String ID =UUID.randomUUID().toString(); //32位 每8位有-相隔
+或引入import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+调用方法 String ID=IdWorker.getget32UUID;//无间隔的32位字符串  
