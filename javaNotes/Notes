@@ -62,3 +62,10 @@ JSONObject joa = groupArray.getJSONObject(0);//取JSONArray index值，得到ind
 String ID =UUID.randomUUID().toString(); //32位 每8位有-相隔
 或引入import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 调用方法 String ID=IdWorker.getget32UUID;//无间隔的32位字符串  
+
+定时任务：SpringBoot中，可使用@Scheduled注解 
+         例:@Scheduled(fixedRate = 3000) ：上一次开始执行时间点之后 3 秒再执行（fixedRate 属性：定时任务开始后再次执行定时任务的延时（需等待上次定时任务完成），单位毫秒）
+            @Scheduled(fixedDelay = 3000) ：上一次执行完毕时间点之后 3 秒再执行（fixedDelay 属性：定时任务执行完成后再次执行定时任务的延时（需等待上次定时任务完成），单位毫秒）
+            @Scheduled(initialDelay = 1000, fixedRate = 3000) ：第一次延迟1秒后执行，之后按fixedRate的规则每 3 秒执行一次（initialDelay 属性：第一次执行定时任务的延迟时间，需配合fixedDelay或者fixedRate来使用）
+            @Scheduled(cron = "0 0 0 1/1 * ? ")//每日00:01执行任务
+        ( https://cron.qqe2.com/    在线Cron表达式生成器 )
